@@ -70,6 +70,42 @@ graph TD
     style B2 fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
+### Scalable design
+
+```mermaid
+graph TD
+    B[Blockchain]
+    BRS[Blockchain Reader Server]
+    LB[Load Balancer]
+    
+    B <-->|RPC Reads| BRS
+    
+    subgraph AG[Autoscaling Group]
+        AN1[Node 1]
+        AN2[Node 2]
+        AN3[Node ...]
+    end
+    
+    BRS -->|SSE| AG
+    
+    C1[Client 1]
+    C2[Client 2]
+    C3[Client ...]
+    
+    C1 -->|SSE| LB
+    C2 -->|SSE| LB
+    C3 -->|SSE| LB
+    
+    LB -->|Route SSE| AG
+    
+    style BRS fill:#f9f,stroke:#333,stroke-width:4px
+    style LB fill:#ff9,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style AN1 fill:#bfb,stroke:#333,stroke-width:2px
+    style AN2 fill:#bfb,stroke:#333,stroke-width:2px
+    style AN3 fill:#bfb,stroke:#333,stroke-width:2px
+```
+
 ## Features
 
 - Fastify server with SSE endpoint for price updates
