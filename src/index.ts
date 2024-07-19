@@ -7,8 +7,8 @@ const { NETWORK_LATENCY, PRICE_UPDATE_INTERVAL } = process.env;
 // Initialize Fastify
 const fastify: FastifyInstance = Fastify({ logger: false });
 
-console.log(`Network latency: ${NETWORK_LATENCY}ms`); 
-console.log(`Price update interval: ${PRICE_UPDATE_INTERVAL}ms`);
+console.log(`Network latency: ${NETWORK_LATENCY ?? 0}ms`); 
+console.log(`Price update interval: ${PRICE_UPDATE_INTERVAL ?? 100}ms`);
 
 const priceUpdateInterval: number = PRICE_UPDATE_INTERVAL ? parseInt(PRICE_UPDATE_INTERVAL) : 100; //ms
 const networkLatency: number = NETWORK_LATENCY ? parseInt(NETWORK_LATENCY) : 0;
@@ -18,7 +18,7 @@ fastify.register(fastifySSEPlugin);
 
 // Register CORS plugin
 fastify.register(fastifyCors, {
-  origin: true, // Allow all origins
+  origin: "*", // Allow all origins
 });
 
 // Store the latest price
