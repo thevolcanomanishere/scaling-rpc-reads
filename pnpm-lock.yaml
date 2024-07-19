@@ -14,9 +14,6 @@ importers:
       '@types/eventsource':
         specifier: ^1.1.15
         version: 1.1.15
-      '@types/k6':
-        specifier: ^0.52.0
-        version: 0.52.0
       '@types/node':
         specifier: ^20.14.11
         version: 20.14.11
@@ -29,9 +26,6 @@ importers:
       fastify-sse-v2:
         specifier: ^4.0.0
         version: 4.0.0(fastify@4.28.1)
-      k6:
-        specifier: ^0.0.0
-        version: 0.0.0
       tsx:
         specifier: ^4.16.2
         version: 4.16.2
@@ -197,9 +191,6 @@ packages:
   '@types/eventsource@1.1.15':
     resolution: {integrity: sha512-XQmGcbnxUNa06HR3VBVkc9+A2Vpi9ZyLJcdS5dwaQQ/4ZMWFO+5c90FnMUpbtMZwB/FChoYHwuVg8TvkECacTA==}
 
-  '@types/k6@0.52.0':
-    resolution: {integrity: sha512-yaw2wg61nKQtToDML+nngzgXVjZ6wNA4R0Q3jKDTeadG5EqfZgis5a1Q2hwY7kjuGuXmu8eM6gHg3tgnOj4vNw==}
-
   '@types/node@20.14.11':
     resolution: {integrity: sha512-kprQpL8MMeszbz6ojB5/tU8PLN4kesnN8Gjzw349rDlNgsSzg90lAVj3llK99Dh7JON+t9AuscPPFW6mPbTnSA==}
 
@@ -345,9 +336,6 @@ packages:
 
   json-schema-traverse@1.0.0:
     resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
-
-  k6@0.0.0:
-    resolution: {integrity: sha512-GAQSWayS2+LjbH5bkRi+pMPYyP1JSp7o+4j58ANZ762N/RH/SdlAT3CHHztnn8s/xgg8kYNM24Gd2IPo9b5W+g==}
 
   light-my-request@5.13.0:
     resolution: {integrity: sha512-9IjUN9ZyCS9pTG+KqTDEQo68Sui2lHsYBrfMyVUTTZ3XhH8PMZq7xO94Kr+eP9dhi/kcKsx4N41p2IXEBil1pQ==}
@@ -571,8 +559,6 @@ snapshots:
 
   '@types/eventsource@1.1.15': {}
 
-  '@types/k6@0.52.0': {}
-
   '@types/node@20.14.11':
     dependencies:
       undici-types: 5.26.5
@@ -747,8 +733,6 @@ snapshots:
       fast-deep-equal: 3.1.3
 
   json-schema-traverse@1.0.0: {}
-
-  k6@0.0.0: {}
 
   light-my-request@5.13.0:
     dependencies:
