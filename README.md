@@ -97,6 +97,7 @@ graph TD
    ```
 
 The server will start and run the compiled `index.js` file.
+You can open the index.html file in a browser to see the price updates in real-time.
 
 ## Running the Load Test
 
