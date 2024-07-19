@@ -5,23 +5,17 @@
     "module": "ESNext",
     "allowJs": true,
     "removeComments": false,
-
     "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-
     "skipLibCheck": true,
-    "outDir": "./dist",
   },
-  "include": ["loadtest/*"]
 }
