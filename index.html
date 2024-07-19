@@ -11,7 +11,7 @@
     <h1>Latest Price: <span id="price">Waiting for update...</span></h1>
 
     <script>
-        const eventSource = new EventSource('http://localhost:3000/price-updates');
+        const eventSource = new EventSource('http://127.0.0.1:3000/price-updates');
         const priceElement = document.getElementById('price');
 
         eventSource.onmessage = (event) => {
