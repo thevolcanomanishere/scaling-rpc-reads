@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Price Updates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .price-container {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .price {
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+
+        .status {
+            font-style: italic;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>Blockchain Price Updates</h1>
+        <div id="connections"></div>
+    </div>
+
+    <script>
+        const connectionsElement = document.getElementById('connections');
+        const startPort = 3001;
+        const maxPort = 3010;
+        const maxConnections = 5;
+        const connectionStates = new Map();
+
+        function createConnectionElement(port) {
+            const element = document.createElement('div');
+            element.className = 'price-container';
+            element.innerHTML = `
+                <h3>Port ${port}</h3>
+                <div class="price">Waiting for update...</div>
+                <div class="status">Attempting to connect...</div>
+            `;
+            connectionsElement.appendChild(element);
+            return {
+                element,
+                priceElement: element.querySelector('.price'),
+                statusElement: element.querySelector('.status')
+            };
+        }
+
+        function updateConnectionState(port, state, eventSource = null, elements = null) {
+            connectionStates.set(port, { state, eventSource, elements });
+        }
+
+        function connectSSE(port) {
+            if (port > maxPort) return;
+
+            let state = connectionStates.get(port);
+            if (state && (state.state === 'connected' || state.state === 'connecting')) return;
+
+            const elements = createConnectionElement(port);
+            const eventSource = new EventSource(`http://localhost:${port}/public-price-updates`);
+
+            updateConnectionState(port, 'connecting', eventSource, elements);
+
+            eventSource.onopen = function () {
+                elements.statusElement.textContent = 'Connected';
+                updateConnectionState(port, 'connected', eventSource, elements);
+            };
+
+            eventSource.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                elements.priceElement.textContent = `$${data.price}`;
+            };
+
+            eventSource.onerror = function (error) {
+                eventSource.close();
+                elements.statusElement.textContent = 'Connection failed or lost';
+                elements.priceElement.textContent = 'Unable to fetch price';
+                updateConnectionState(port, 'failed');
+                // Remove the element for failed connection
+                elements.element.remove();
+            };
+        }
+
+        function attemptConnections() {
+            let activeConnections = Array.from(connectionStates.values()).filter(s => s.state === 'connected').length;
+            for (let port = startPort; port <= maxPort && activeConnections < maxConnections; port++) {
+                const state = connectionStates.get(port);
+                if (!state || state.state === 'failed') {
+                    connectSSE(port);
+                    activeConnections++;
+                }
+            }
+        }
+
+        // Initial connection attempts
+        attemptConnections();
+
+        // Periodically check if we can establish more connections
+        setInterval(attemptConnections, 5000); // Check every 5 seconds
+    </script>
+</body>
+
+</html>

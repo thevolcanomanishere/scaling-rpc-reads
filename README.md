@@ -106,6 +106,20 @@ graph TD
     style AN3 fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
+This scaling architecture efficiently distributes blockchain data to multiple clients while minimizing blockchain load. Here's how it works:
+
+1. A single Blockchain Reader Server connects to the blockchain, making RPC calls to fetch the latest data (e.g., asset prices).
+
+2. The Reader Server broadcasts updates via Server-Sent Events (SSE) to an Autoscaling Group of nodes.
+
+3. As client demand increases, the Autoscaling Group automatically adds more nodes to handle the load.
+
+4. A Load Balancer sits in front of the Autoscaling Group, evenly distributing incoming client connections across all available nodes.
+
+5. Clients connect to the Load Balancer using SSE, receiving real-time updates from the assigned node in the Autoscaling Group.
+
+This design allows the system to handle a growing number of clients without increasing the load on the blockchain. It maintains a single source of truth (the Blockchain Reader Server) while enabling horizontal scaling of the data distribution layer (the Autoscaling Group).
+
 ## Features
 
 - Fastify server with SSE endpoint for price updates

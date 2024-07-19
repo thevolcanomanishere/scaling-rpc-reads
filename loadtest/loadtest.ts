@@ -14,7 +14,9 @@ function delay(ms: number): Promise<void> {
 
 async function createConnection(): Promise<EventSource> {
   await delay(CONNECTION_DELAY); // Wait for the specified delay
-  const es = new EventSource('http://127.0.0.1:3000/price-updates');
+  // const es = new EventSource('http://127.0.0.1:3000/price-updates');
+  const es = new EventSource('https://scaling-rpc-reads-production.up.railway.app/price-updates');
+
   
   es.onopen = () => {
     activeConnections++;

@@ -9,7 +9,15 @@
   "scripts": {
     "dev": "tsx --env-file=.env watch src/index.ts",
     "start": "tsx --env-file=.env src/index.ts",
-    "loadtest": "tsx loadtest/loadtest.ts"    
+    "loadtest": "tsx loadtest/loadtest.ts",
+    "start-blockchain-reader": "tsx src/scaleable/blockchainReader.ts",
+    "start-public-node-1": "tsx src/scaleable/publicNode.ts",
+    "start-public-node-2": "tsx src/scaleable/publicNode.ts",
+    "start-public-node-3": "tsx src/scaleable/publicNode.ts",
+    "start-public-node-4": "tsx src/scaleable/publicNode.ts",
+    "start-public-node-5": "tsx src/scaleable/publicNode.ts",
+    "serve": "http-server ./html/scalable-example.html -p 5173",
+    "start:scalable": "concurrently \"npm:start-blockchain-reader\" \"npm:start-public-node-*\" \"npm:dev\" \"npm run serve\""
   },
   "keywords": [],
   "author": "Alex McGonagle",
@@ -18,9 +26,11 @@
     "@fastify/cors": "^9.0.1",
     "@types/eventsource": "^1.1.15",
     "@types/node": "^20.14.11",
+    "concurrently": "^8.2.2",
     "eventsource": "^2.0.2",
     "fastify": "^4.28.1",
     "fastify-sse-v2": "^4.0.0",
+    "http-server": "^14.1.1",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   }
