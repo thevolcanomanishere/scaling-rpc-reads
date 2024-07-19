@@ -4,9 +4,25 @@ This project demonstrates a Server-Sent Events (SSE) based system for scaling bl
 
 ## Why Use This Pattern?
 
-This project demonstrates a pattern for scaling blockchain RPC read operations using Server-Sent Events (SSE). Here's why this approach is beneficial compared to having each client read directly from the blockchain:
+This project demonstrates a pattern for scaling blockchain RPC read operations using Server-Sent Events (SSE). It's important to note that this approach is not a one-size-fits-all solution for all blockchain reads, but rather it excels in specific scenarios:
 
-1. **Reduced Network Load**: Instead of every client making individual RPC calls to the blockchain, a single server acts as an intermediary. This significantly reduces the number of direct blockchain queries, lowering network congestion and potential costs associated with RPC calls.
+### Ideal Use Cases
+
+This pattern is particularly effective for:
+
+1. **Frequently Requested, Shared Data**: When many clients need the same piece of information, such as:
+   - The current price of an asset
+   - The total supply of a token
+   - The current gas price
+   - The latest block number
+
+2. **High-Frequency Updates**: Data that changes often and needs to be continuously monitored by multiple clients.
+
+3. **Read-Only Operations**: Operations that don't require writing to the blockchain or executing transactions.
+
+In these scenarios, the benefits of this pattern include:
+
+1. **Reduced Network Load**: Instead of every client making individual RPC calls to the blockchain for the same data, a single server acts as an intermediary. This significantly reduces the number of direct blockchain queries, lowering network congestion and potential costs associated with RPC calls.
 
 2. **Improved Scalability**: As the number of clients increases, the load on the blockchain node remains constant. The server can handle thousands of client connections while maintaining a single connection to the blockchain, allowing for better scalability.
 
@@ -16,17 +32,17 @@ This project demonstrates a pattern for scaling blockchain RPC read operations u
 
 5. **Bandwidth Efficiency**: SSE allows for efficient, unidirectional data streaming from server to clients, reducing overall bandwidth usage compared to polling or WebSocket solutions.
 
-6. **Reduced Client Complexity**: Clients don't need to implement blockchain connection logic or handle RPC call rate limiting, simplifying client-side code.
+### When to Use Direct Blockchain Reads
 
-7. **Enhanced Monitoring and Control**: Centralizing blockchain reads allows for better monitoring of data access patterns and the ability to implement rate limiting or access controls if needed.
+While this pattern is powerful for shared, frequently-updated data, there are scenarios where direct blockchain reads are still preferable:
 
-8. **Cost Reduction**: For blockchain networks that charge for RPC calls, this pattern can significantly reduce operational costs by minimizing the total number of calls made.
+1. **User-Specific Data**: When clients need to read data specific to their account or transactions.
+2. **Infrequent Queries**: For data that is rarely accessed or doesn't change often.
+3. **Complex Queries**: Operations that require complex smart contract interactions or data aggregation from multiple sources.
+4. **Write Operations**: Any operation that needs to modify the blockchain state.
+5. **Privacy-Sensitive Information**: When the data being queried is sensitive and shouldn't be broadcast to all clients.
 
-9. **Improved Reliability**: The server can implement advanced error handling and retry mechanisms for blockchain interactions, providing a more reliable data stream to clients.
-
-10. **Flexibility for Future Enhancements**: This architecture allows for easy integration of additional features like data aggregation, formatting, or filtering at the server level, benefiting all connected clients.
-
-By implementing this pattern, you can create more efficient, scalable, and cost-effective blockchain-based applications that provide real-time data to a large number of clients without overwhelming the blockchain network.
+By implementing this pattern for appropriate use cases, you can create more efficient, scalable, and cost-effective blockchain-based applications that provide real-time data to a large number of clients without overwhelming the blockchain network.
 
 ## Architecture Diagram
 
