@@ -2,11 +2,16 @@ import Fastify, { FastifyInstance } from 'fastify';
 import fastifySSEPlugin from 'fastify-sse-v2';
 import fastifyCors from '@fastify/cors';
 
+// Extract environment variables once at the start
+const { NETWORK_LATENCY, PRICE_UPDATE_INTERVAL } = process.env;
 // Initialize Fastify
 const fastify: FastifyInstance = Fastify({ logger: false });
 
-const PRICE_UPDATE_INTERVAL = 100; //ms
-const NETWORK_LATENCY: number = 100;
+console.log(`Network latency: ${NETWORK_LATENCY}ms`); 
+console.log(`Price update interval: ${PRICE_UPDATE_INTERVAL}ms`);
+
+const priceUpdateInterval: number = PRICE_UPDATE_INTERVAL ? parseInt(PRICE_UPDATE_INTERVAL) : 100; //ms
+const networkLatency: number = NETWORK_LATENCY ? parseInt(NETWORK_LATENCY) : 0;
 
 // Register the SSE plugin
 fastify.register(fastifySSEPlugin);
@@ -22,8 +27,6 @@ let latestPrice: string = "0";
 // Store the number of connected clients
 let connectedClients: number = 0;
 
-// Network latency simulation (in milliseconds)
-
 // Function to generate a random price
 function generateRandomPrice(): string {
   const randomPrice = Math.random() * (1000 - 100) + 100;
@@ -36,7 +39,7 @@ async function fetchLatestPrice(): Promise<void> {
 }
 
 // Fetch new random price every 10 seconds
-setInterval(fetchLatestPrice, PRICE_UPDATE_INTERVAL);
+setInterval(fetchLatestPrice, priceUpdateInterval);
 
 // Helper function to simulate network latency
 function sleep(ms: number): Promise<void> {
@@ -55,14 +58,14 @@ fastify.get('/price-updates', { }, (request, reply) => {
 
   reply.sse((async function* () {
     while (true) {
-      await sleep(NETWORK_LATENCY); // Simulate network latency
+      await sleep(networkLatency); // Simulate network latency
       yield { data: JSON.stringify({ price: latestPrice }) };
     }
   })());
 });
 
 // Route to get the number of connected clients
-fastify.get('/client-count', async (request, reply) => {
+fastify.get('/client-count', async () => {
   return { connectedClients };
 });
 
