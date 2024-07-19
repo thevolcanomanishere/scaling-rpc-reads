@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Updates</title>
+</head>
+
+<body>
+    <h1>Latest Price: <span id="price">Waiting for update...</span></h1>
+
+    <script>
+        const eventSource = new EventSource('http://localhost:3000/price-updates');
+        const priceElement = document.getElementById('price');
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            priceElement.textContent = `$${data.price}`;
+        };
+    </script>
+</body>
+
+</html>
